@@ -1,0 +1,54 @@
+﻿@model IEnumerable<AjaxActionLinks.Models.Student>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.StudentId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.StudentId }) |
+
+                <a asp-action="AjaxEdit" asp-controller="Students"
+                   
+                   data-ajax="true"
+                   data-ajax-method="get"
+                   data-ajax-mode="replace"
+                   data-ajax-url="Students\AjaxEdit?id=@item.StudentId"
+                   data-ajax-update="#divedit">Edit A</a> |
+
+                <a asp-action="AjaxDelete" asp-controller="Students"
+                   data-ajax-begin="return confirm('Are You Sure');"
+                   data-ajax="true"
+                   data-ajax-method="get"
+                   data-ajax-mode="replace"
+                   data-ajax-url="Students\AjaxDelete?id=@item.StudentId"
+                   data-ajax-update="#mydiv">Delete A</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

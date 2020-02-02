@@ -1,0 +1,29 @@
+﻿@model IEnumerable<AjaxActionLinks.Models.Student>
+
+
+<h1>Index</h1>
+
+<p>
+   
+    <a asp-action="AjaxCreate" asp-controller="Students"
+       data-ajax="true"
+       data-ajax-method="get"
+       data-ajax-mode="replace"      
+       data-ajax-update="#divcreate">Create New</a>
+</p>
+
+<div id="divcreate">
+
+</div>
+
+<div id="mydiv">
+    @{
+        Html.RenderPartial("AjaxDelete");
+    }
+</div>
+
+<div id="divedit">
+   
+</div>
+
+

@@ -1,0 +1,163 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+<h1>Index</h1>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#getAllStudents").click(function (){
+
+
+            $.ajax({
+
+                url: '/AjStudents/GetStudents',
+                type: 'GET',
+                dataType: 'json',
+                success: function (students) {
+                    PrepareTable(students);
+
+                }
+        
+
+            });
+
+            function PrepareTable(students) {
+
+                
+            mytable = "<table class='table'><thead><tr><th>ID</th><th>Name</th><th>Email</th></tr><thead> " +
+            + "<tbody>";
+
+            $.each(students, function (index, item) {
+
+                var myrow = "<tr><td>" + item.studentId + "</td><td>" + item.name + "</td><td>" + item.email+ "</td></tr>";
+                mytable += myrow;
+
+            });
+            mytable += "</tbody></table>";
+            $("#mydiv").html(mytable);
+
+            }
+
+        });
+
+
+        $('#btnGetStudent').click(function myfunction() {
+
+            var sid = $("#txtID").val();
+            $.ajax({
+
+                url: '/AjStudents/GetStudentByID?id=' + sid,
+                type: 'GET',
+                dataType: 'json',
+                success: function (student) {
+                    FillForm(student);
+                    //console.log(student);
+                }
+
+                });
+
+            function FillForm(student) {
+
+                $("#txtName").val(student.name);
+                $("#txtEmail").val(student.email);
+                //alert(student.name)
+
+                };
+
+           // alert(sid);
+            
+        });
+
+
+         $('#btnUpdate').click(function myfunction() {
+
+             var sid = $("#txtID").val();
+             var sname = $("#txtName").val();
+             var semail = $("#txtEmail").val();
+             var obj = { StudentID: sid, Name: sname, Email: semail };
+
+
+            $.ajax({
+
+                url: '/AjStudents/UpdateStudent',
+                type: 'Post',
+                dataType: 'json',
+                data: obj,
+                success: function (msg) {
+                    $("#msg").html(msg);
+                    
+                }
+
+            });
+            
+         });
+
+         $('#btnCreate').click(function myfunction() {
+
+             var sid = 0;
+             var sname = $("#txtName").val();
+             var semail = $("#txtEmail").val();
+             var obj = { StudentID: sid, Name: sname, Email: semail };
+
+
+            $.ajax({
+
+                url: '/AjStudents/CreateStudent',
+                type: 'Post',
+                dataType: 'json',
+                data: obj,
+                success: function (msg) {
+                    $("#msg").html(msg);
+                    
+                }
+
+            });
+            
+        });
+    });
+
+
+</script>
+
+
+
+
+<input type="button" id="getAllStudents" value="Get All" />
+
+
+
+@*<input type="button" id="getStudent" value="Get All" />*@
+
+<div id="mydiv">
+    This is my Div
+</div>
+
+<form>
+    <div class="form-group">
+        <label  class="control-label">ID</label>
+        <input  class="form-control" id="txtID" />
+    </div>
+    <div class="form-group">
+        <label  class="control-label">NAME</label>
+        <input class="form-control" id="txtName" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">EMAIL</label>
+        <input class="form-control" id="txtEmail" />
+    </div>
+    <div class="form-group">
+        <input type="button" value="GetStudent" class="btn btn-primary" id="btnGetStudent" />
+        <input type="button" value="UpdateStudent" class="btn btn-primary" id="btnUpdate" />
+        <input type="button" value="CreateStudent" class="btn btn-primary" id="btnCreate" />
+
+    </div>
+</form>
+
